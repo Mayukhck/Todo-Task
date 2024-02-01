@@ -19,8 +19,7 @@ body {
 
 .nContainer {
     border: none;
-    border-radius: 8px;
-    padding: 10px 10px;
+    transform: translateX(400px);
 }
 
 .notification {
@@ -61,6 +60,9 @@ body {
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    max-width: 400px;
+    max-height: 300px;
+    overflow: auto;
 }
 
 .button-box {
@@ -385,7 +387,7 @@ li:hover .action {
         background: #fff;
         box-shadow: 0 2px 4px rgba(0, 0, 0, .1),
             0 8px 16px rgba(0, 0, 0, 0.1);
-        transform: translate(-5%, -20%);
+        transform: translate(-5%, -5%);
     }
 }
 
@@ -434,11 +436,13 @@ li:hover .action {
 
 }
 
-@media only screen and (max-width: 800px) {
+
+@media only screen and (max-width: 1000px) {
     .nContainer {
         border: none;
-        border-radius: 8px;
-        padding: 10px 10px;
+        transform: translateY(50px);
+        position: sticky;
+        z-index: 20;
     }
 
     .notification {

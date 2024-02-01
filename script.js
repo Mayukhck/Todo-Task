@@ -79,10 +79,11 @@ addInputField.addEventListener("keypress", (e) => {
 
 addTaskBtn.onclick = () => {
     addTask();
+    btns[0].focus();
 };
 
 function addTask() {
-    let userData = addInputField.value.trim().toLowerCase();
+    let userData = addInputField.value.trim();
 
     if (userData.length === 0 || !isValidInput(userData)) {
         showNotification("Invalid input. Please avoid special characters.", "danger");
@@ -93,7 +94,7 @@ function addTask() {
 
     listArr = listArr.map(item => item.toLowerCase());
 
-    if (!listArr.includes(userData)) {
+    if (!listArr.includes(userData.toLowerCase())) {
         listArr.unshift(userData);
         localStorage.setItem("Pending Todos", JSON.stringify(listArr));
         showtask();
@@ -101,17 +102,17 @@ function addTask() {
         addInputField.value = "";
         addTaskBtn.classList.remove("active");
         showNotification("ToDo is Added Successfully", "success");
+        btns[0].focus();
     } else {
         showNotification("Task already exists", "danger");
     }
 }
 
+
 function isValidInput(input) {
     const pattern = /^[a-zA-Z0-9 ]*$/;
     return pattern.test(input);
 }
-
-
 
 
 function showtask() {
@@ -152,7 +153,16 @@ function deleteTask(index) {
     let listArr = JSON.parse(getLocalStorage);
     const taskToDelete = listArr[index];
 
-    showConfirm(`Are you sure you want to delete:\n\n"${taskToDelete}"`, function (result) {
+    const maxLength = 30;
+    let formattedTaskName = '';
+
+    for (let i = 0; i < taskToDelete.length; i += maxLength) {
+        formattedTaskName += taskToDelete.slice(i, i + maxLength) + '\n';
+    }
+
+    formattedTaskName = formattedTaskName.trim();
+
+    showConfirm(`Are you want to delete?'\n'"${formattedTaskName}"`, function (result) {
         if (result) {
             listArr.splice(index, 1);
             localStorage.setItem("Pending Todos", JSON.stringify(listArr));
@@ -161,6 +171,7 @@ function deleteTask(index) {
         }
     });
 }
+
 
 
 function showConfirm(message, callback) {
@@ -208,7 +219,7 @@ function showConfirm(message, callback) {
 
 deleteAllPenTodos.addEventListener('click', () => {
 
-    showConfirm("are you shore you want to delete?", function (result) {
+    showConfirm("Are you want to delete?", function (result) {
         if (result) {
             listArr = []
 
@@ -226,11 +237,18 @@ function editTask(index) {
     let listArr = JSON.parse(getLocalStorage);
     let currentTaskName = listArr[index];
 
-    showConfirm("Are you sure you want to edit task '" + currentTaskName + "'?", function (result) {
-        if (result) {
+    const maxLineLength = 30;
+    let formattedTaskName = '';
 
+    for (let i = 0; i < currentTaskName.length; i += maxLineLength) {
+        formattedTaskName += currentTaskName.slice(i, i + maxLineLength) + '\n';
+    }
+
+    formattedTaskName = formattedTaskName.trim();
+
+    showConfirm(`Are you want to edit task?\n"${formattedTaskName}"`, function (result) {
+        if (result) {
             editInputField.value = index;
-            addInputField.value = listArr[index];
             addInputField.value = currentTaskName;
             addTaskBtn.style.display = "none";
             saveTaskBtn.style.display = "block";
@@ -238,17 +256,12 @@ function editTask(index) {
             saveTaskBtn.onclick = () => {
                 let editedValue = addInputField.value.trim().toLowerCase();
                 if (editedValue.length > 0) {
-
                     let isDuplicate = listArr.map(item => item.toLowerCase()).includes(editedValue);
 
                     if (!isDuplicate) {
-                        listArr.splice(index, 1);
-                        listArr.unshift(addInputField.value.trim());
-
+                        listArr[index] = addInputField.value.trim();
                         localStorage.setItem("Pending Todos", JSON.stringify(listArr));
-
                         showtask();
-
                         addInputField.value = "";
                         addTaskBtn.style.display = "block";
                         saveTaskBtn.style.display = "none";
@@ -261,33 +274,53 @@ function editTask(index) {
                 }
             };
         }
-    })
+    });
 }
+
 
 
 showCompleteTask()
 
 function completeTask(index) {
-    let getLocalStorage = localStorage.getItem("Pending Todos")
-    let listArr = JSON.parse(getLocalStorage)
+    let getLocalStorage = localStorage.getItem("Pending Todos");
+    let listArr = JSON.parse(getLocalStorage);
 
-    showConfirm("Are you sure you want to complete the task?", function (result) {
+    const taskName = listArr[index];
+    const formattedTaskName = breakTextIntoLines(taskName, 30);
+
+    showConfirm(`Are you want to complete the task?\n"${formattedTaskName}"`, function (result) {
         if (result) {
-            let comp = listArr.splice(index, 1)
+            let completedTask = listArr.splice(index, 1)[0];
 
-            localStorage.setItem('Pending Todos', JSON.stringify(listArr))
-            showtask()
+            localStorage.setItem('Pending Todos', JSON.stringify(listArr));
+            showtask();
 
-            comp.forEach(com => {
-                comArr.push(com)
-            })
-
-            localStorage.setItem("Complete Todos", JSON.stringify(comArr))
-            showCompleteTask()
-            showNotification("You have successfully Completed one Task", "success")
+            comArr.push(completedTask);
+            localStorage.setItem("Complete Todos", JSON.stringify(comArr));
+            showCompleteTask();
+            showNotification("You have successfully completed one Task", "success");
         }
     });
 }
+
+
+function breakTextIntoLines(text, maxLineLength) {
+    let formattedText = '';
+    let currentLine = '';
+
+    for (let i = 0; i < text.length; i++) {
+        currentLine += text[i];
+
+        if (currentLine.length >= maxLineLength || i === text.length - 1) {
+            formattedText += currentLine + '\n';
+            currentLine = '';
+        }
+    }
+
+    return formattedText.trim();
+}
+
+
 
 
 function showCompleteTask() {
@@ -320,25 +353,35 @@ function showCompleteTask() {
 
 
 function comDeleteTask(index) {
-    let getLocalStorage = localStorage.getItem("Complete Todos")
-    let comArr = JSON.parse(getLocalStorage)
+    let getLocalStorage = localStorage.getItem("Complete Todos");
+    let comArr = JSON.parse(getLocalStorage);
     let taskName = comArr[index];
 
-    showConfirm("Are you sure you want to delete task '" + taskName + "'?", function (result) {
+    const maxLength = 30;
+    let formattedTaskName = '';
+
+    for (let i = 0; i < taskName.length; i += maxLength) {
+        formattedTaskName += taskName.slice(i, i + maxLength) + '\n'
+    }
+
+    formattedTaskName = formattedTaskName.trim();
+
+    showConfirm(`Are you want to delete task?\n"${formattedTaskName}"`, function (result) {
         if (result) {
-            comArr.splice(index, 1)
-            localStorage.setItem("Complete Todos", JSON.stringify(comArr))
-            showCompleteTask()
-            showNotification("Deleted one task from Completed Task", "danger")
+            comArr.splice(index, 1);
+            localStorage.setItem("Complete Todos", JSON.stringify(comArr));
+            showCompleteTask();
+            showNotification("Deleted one task from Completed Task", "danger");
         }
     });
 }
 
 
 
+
 deleteAllComTodos.addEventListener('click', () => {
 
-    showConfirm("are you shore you want to delete?", function (result) {
+    showConfirm("Are you want to delete?", function (result) {
         if (result) {
             comArr = []
 
@@ -350,12 +393,22 @@ deleteAllComTodos.addEventListener('click', () => {
 
 })
 
+
 function back(index) {
     let getLocalStorageComplete = localStorage.getItem("Complete Todos");
     let comArr = JSON.parse(getLocalStorageComplete);
     let taskName = comArr[index];
 
-    showConfirm("Are you sure you want to move task '" + taskName + "' back?", function (result) {
+    const maxLength = 30;
+    let formattedTaskName = '';
+
+    for (let i = 0; i < taskName.length; i += maxLength) {
+        formattedTaskName += taskName.slice(i, i + maxLength) + '\n'
+    }
+
+    formattedTaskName = formattedTaskName.trim();
+
+    showConfirm(`Are you want to move task back?+"${formattedTaskName}"`, function (result) {
         if (result) {
             let backTodo = comArr.splice(index, 1);
 
@@ -374,36 +427,48 @@ function back(index) {
 
 
 
+
 function filterPenTask() {
     let filterInput = document.querySelector('#penTaskFilter').value.toUpperCase()
     let li = pending.querySelectorAll('li')
+    let matchFound = false;
 
     li.forEach(todo => {
         if (todo) {
             let textValue = todo.textContent || todo.innerHTML
             if (textValue.toUpperCase().indexOf(filterInput) > -1) {
-                todo.style.display = ""
-            }
-            else {
-                todo.style.display = "none"
+                todo.style.display = "";
+                matchFound = true;
+            } else {
+                todo.style.display = "none";
             }
         }
-    })
+    });
+
+    if (!matchFound) {
+        showNotification("Match not found", "danger");
+    }
 }
+
 
 function filterCompleteTask() {
     let filterInput = document.querySelector('#comTaskFilter').value.toUpperCase()
     let li = completeTasks.querySelectorAll('li')
+    let matchFound = false;
 
     li.forEach(todo => {
         if (todo) {
             let textValue = todo.textContent || todo.innerHTML
             if (textValue.toUpperCase().indexOf(filterInput) > -1) {
-                todo.style.display = ""
-            }
-            else {
-                todo.style.display = "none"
+                todo.style.display = "";
+                matchFound = true;
+            } else {
+                todo.style.display = "none";
             }
         }
-    })
-} 
+    });
+
+    if (!matchFound) {
+        showNotification("Match not found", "danger");
+    }
+}
