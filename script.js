@@ -45,7 +45,6 @@ btns[1].addEventListener('click', () => {
 })
 
 
-
 addInputField.addEventListener('input', (event) => {
 
     var inputVal = addInputField.value;
@@ -74,13 +73,15 @@ showtask()
 addInputField.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
         addTask();
+        btns[0].focus();
     }
 });
 
+
 addTaskBtn.onclick = () => {
     addTask();
-    btns[0].focus();
 };
+
 
 function addTask() {
     let userData = addInputField.value.trim();
@@ -100,9 +101,9 @@ function addTask() {
         showtask();
 
         addInputField.value = "";
+
         addTaskBtn.classList.remove("active");
         showNotification("ToDo is Added Successfully", "success");
-        btns[0].focus();
     } else {
         showNotification("Task already exists", "danger");
     }
@@ -154,7 +155,7 @@ function deleteTask(index) {
     const taskToDelete = listArr[index];
 
     const maxLength = 30;
-    let formattedTaskName = '';
+    let formattedTaskName = "";
 
     for (let i = 0; i < taskToDelete.length; i += maxLength) {
         formattedTaskName += taskToDelete.slice(i, i + maxLength) + '\n';
@@ -162,7 +163,7 @@ function deleteTask(index) {
 
     formattedTaskName = formattedTaskName.trim();
 
-    showConfirm(`Are you want to delete?'\n'"${formattedTaskName}"`, function (result) {
+    showConfirm(`Are you want to delete?\r\"${formattedTaskName}"`, function (result) {
         if (result) {
             listArr.splice(index, 1);
             localStorage.setItem("Pending Todos", JSON.stringify(listArr));
@@ -225,7 +226,7 @@ deleteAllPenTodos.addEventListener('click', () => {
 
             localStorage.setItem("Pending Todos", JSON.stringify(listArr))
             showtask()
-            showNotification("Deleted All Pending Task Successfully", "danger")
+            showNotification("Deleted All Pending Task", "danger")
         }
     });
 
@@ -246,7 +247,7 @@ function editTask(index) {
 
     formattedTaskName = formattedTaskName.trim();
 
-    showConfirm(`Are you want to edit task?\n"${formattedTaskName}"`, function (result) {
+    showConfirm(`Are you want to edit task?"${formattedTaskName}"`, function (result) {
         if (result) {
             editInputField.value = index;
             addInputField.value = currentTaskName;
@@ -267,7 +268,7 @@ function editTask(index) {
                         saveTaskBtn.style.display = "none";
                         showNotification("ToDo is Edited Successfully", "success");
                     } else {
-                        showNotification("This task already exists. Please enter a unique task.", "danger");
+                        showNotification("This task already exists.", "danger");
                     }
                 } else {
                     showNotification("Please enter a valid task", "danger");
@@ -276,7 +277,6 @@ function editTask(index) {
         }
     });
 }
-
 
 
 showCompleteTask()
@@ -288,7 +288,7 @@ function completeTask(index) {
     const taskName = listArr[index];
     const formattedTaskName = breakTextIntoLines(taskName, 30);
 
-    showConfirm(`Are you want to complete the task?\n"${formattedTaskName}"`, function (result) {
+    showConfirm(`Are you want to complete the task?"${formattedTaskName}"`, function (result) {
         if (result) {
             let completedTask = listArr.splice(index, 1)[0];
 
@@ -298,7 +298,7 @@ function completeTask(index) {
             comArr.push(completedTask);
             localStorage.setItem("Complete Todos", JSON.stringify(comArr));
             showCompleteTask();
-            showNotification("You have successfully completed one Task", "success");
+            showNotification("You have completed Task", "success");
         }
     });
 }
@@ -319,8 +319,6 @@ function breakTextIntoLines(text, maxLineLength) {
 
     return formattedText.trim();
 }
-
-
 
 
 function showCompleteTask() {
@@ -366,17 +364,15 @@ function comDeleteTask(index) {
 
     formattedTaskName = formattedTaskName.trim();
 
-    showConfirm(`Are you want to delete task?\n"${formattedTaskName}"`, function (result) {
+    showConfirm(`Are you want to delete task?"${formattedTaskName}"`, function (result) {
         if (result) {
             comArr.splice(index, 1);
             localStorage.setItem("Complete Todos", JSON.stringify(comArr));
             showCompleteTask();
-            showNotification("Deleted one task from Completed Task", "danger");
+            showNotification("Deleted task from Completed Task", "danger");
         }
     });
 }
-
-
 
 
 deleteAllComTodos.addEventListener('click', () => {
@@ -408,7 +404,7 @@ function back(index) {
 
     formattedTaskName = formattedTaskName.trim();
 
-    showConfirm(`Are you want to move task back?+"${formattedTaskName}"`, function (result) {
+    showConfirm(`Are you want to move task back?:  "${formattedTaskName}"`, function (result) {
         if (result) {
             let backTodo = comArr.splice(index, 1);
 
@@ -424,8 +420,6 @@ function back(index) {
         }
     });
 }
-
-
 
 
 function filterPenTask() {
