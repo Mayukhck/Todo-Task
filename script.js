@@ -73,7 +73,7 @@ showtask()
 addInputField.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
         addTask();
-        btns[0].focus();
+        /* btns[0].focus(); */
     }
 });
 
@@ -247,7 +247,7 @@ function editTask(index) {
 
     formattedTaskName = formattedTaskName.trim();
 
-    showConfirm(`Are you want to edit task?"${formattedTaskName}"`, function (result) {
+    showConfirm(`Are you sure you want to edit task "${formattedTaskName}"?`, function (result) {
         if (result) {
             editInputField.value = index;
             addInputField.value = currentTaskName;
@@ -260,7 +260,8 @@ function editTask(index) {
                     let isDuplicate = listArr.map(item => item.toLowerCase()).includes(editedValue);
 
                     if (!isDuplicate) {
-                        listArr[index] = addInputField.value.trim();
+                        listArr.splice(index, 1);
+                        listArr.unshift(addInputField.value.trim());
                         localStorage.setItem("Pending Todos", JSON.stringify(listArr));
                         showtask();
                         addInputField.value = "";
@@ -277,6 +278,7 @@ function editTask(index) {
         }
     });
 }
+
 
 
 showCompleteTask()
