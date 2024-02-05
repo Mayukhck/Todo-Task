@@ -65,16 +65,16 @@ body {
     overflow: auto;
 }
 
-.message-box::-webkit-scrollbar {
+.popTaskBox::-webkit-scrollbar {
     width: 20px;
 }
 
-.message-box::-webkit-scrollbar-track {
+.popTaskBox::-webkit-scrollbar-track {
     background: #fff;
     border-radius: 25px;
 }
 
-.message-box::-webkit-scrollbar-thumb {
+.popTaskBox::-webkit-scrollbar-thumb {
     background: #1877f2;
     border-radius: 25px;
     border: 6px solid #fff;
@@ -104,6 +104,15 @@ body {
     color: #fff;
 }
 
+
+.popTaskBox {
+    max-width: 350px;
+    max-height: 100px;
+    overflow: auto;
+    word-wrap: break-word;
+    font-weight: bold;
+    font-size: small;
+}
 
 .container {
     width: 500px;

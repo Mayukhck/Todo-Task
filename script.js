@@ -161,9 +161,9 @@ function deleteTask(index) {
         formattedTaskName += taskToDelete.slice(i, i + maxLength) + '\n';
     }
 
-    formattedTaskName = formattedTaskName.trim();
+    //formattedTaskName = formattedTaskName.trim();
 
-    showConfirm(`Are you want to delete?\r\"${formattedTaskName}"`, function (result) {
+    showConfirm(`Are you want to delete?\n\n`, formattedTaskName, function (result) {
         if (result) {
             listArr.splice(index, 1);
             localStorage.setItem("Pending Todos", JSON.stringify(listArr));
@@ -175,52 +175,56 @@ function deleteTask(index) {
 
 
 
-function showConfirm(message, callback) {
-    var confirmbox = document.createElement("div");
-    confirmbox.classList.add('confirm-box');
+function showConfirm(message, content, callback) {
+    let confirmBox = document.createElement("div");
+    confirmBox.classList.add("confirm-box");
 
-    var messagebox = document.createElement("div");
-    messagebox.classList.add('message-box');
-    messagebox.textContent = message;
-    confirmbox.appendChild(messagebox);
+    let messageBox = document.createElement("div");
+    messageBox.classList.add("message-box");
+    messageBox.innerText = message;
+    confirmBox.appendChild(messageBox);
 
-    var buttonbox = document.createElement("div");
-    buttonbox.classList.add('button-box');
-    messagebox.appendChild(buttonbox);
+    let popTaskBox = document.createElement("div");
+    popTaskBox.classList.add("popTaskBox");
+    popTaskBox.innerText = content;
+    messageBox.appendChild(popTaskBox);
 
-    var yesButton = document.createElement("button");
-    yesButton.classList.add('yes-button');
-    yesButton.textContent = "Yes";
-    buttonbox.appendChild(yesButton);
-    yesButton.addEventListener('click', YesButtonClick);
+    let buttonBox = document.createElement("div");
+    buttonBox.classList.add("button-box");
+    messageBox.appendChild(buttonBox);
 
-    var noButton = document.createElement("button");
-    noButton.classList.add('no-button');
-    noButton.textContent = "No";
-    buttonbox.appendChild(noButton);
-    noButton.addEventListener('click', NoButtonClick);
+    let yesBox = document.createElement("button");
+    yesBox.classList.add("yes-button");
+    yesBox.textContent = "Yes";
+    buttonBox.appendChild(yesBox);
 
-    function removeConfirmBox() {
-        document.body.removeChild(confirmbox);
+    let noBox = document.createElement("button");
+    noBox.classList.add("no-button");
+    noBox.textContent = "No";
+    buttonBox.appendChild(noBox);
+
+    document.body.appendChild(confirmBox);
+    function removeConfirmationBox() {
+        document.body.removeChild(confirmBox);
     }
 
-    function YesButtonClick() {
+    yesBox.addEventListener("click", yesButtonClick);
+    function yesButtonClick() {
         callback(true);
-        removeConfirmBox();
+        removeConfirmationBox();
     }
 
-    function NoButtonClick() {
+    noBox.addEventListener("click", noButtonClick);
+    function noButtonClick() {
         callback(false);
-        removeConfirmBox();
+        removeConfirmationBox();
     }
-
-    document.body.appendChild(confirmbox);
 }
 
 
 deleteAllPenTodos.addEventListener('click', () => {
 
-    showConfirm("Are you want to delete?", function (result) {
+    showConfirm("Are you want to delete?", (content = ""), function (result) {
         if (result) {
             listArr = []
 
@@ -245,9 +249,9 @@ function editTask(index) {
         formattedTaskName += currentTaskName.slice(i, i + maxLineLength) + '\n';
     }
 
-    formattedTaskName = formattedTaskName.trim();
+    /* formattedTaskName = formattedTaskName.trim(); */
 
-    showConfirm(`Are you sure you want to edit task "${formattedTaskName}"?`, function (result) {
+    showConfirm(`Are you sure you want to edit task?\n\n`, formattedTaskName, function (result) {
         if (result) {
             editInputField.value = index;
             addInputField.value = currentTaskName;
@@ -290,7 +294,7 @@ function completeTask(index) {
     const taskName = listArr[index];
     const formattedTaskName = breakTextIntoLines(taskName, 30);
 
-    showConfirm(`Are you want to complete the task?"${formattedTaskName}"`, function (result) {
+    showConfirm(`Are you want to complete the task?\n\n`, formattedTaskName, function (result) {
         if (result) {
             let completedTask = listArr.splice(index, 1)[0];
 
@@ -364,9 +368,9 @@ function comDeleteTask(index) {
         formattedTaskName += taskName.slice(i, i + maxLength) + '\n'
     }
 
-    formattedTaskName = formattedTaskName.trim();
+    /* formattedTaskName = formattedTaskName.trim(); */
 
-    showConfirm(`Are you want to delete task?"${formattedTaskName}"`, function (result) {
+    showConfirm(`Are you want to delete task?\n\n`, formattedTaskName, function (result) {
         if (result) {
             comArr.splice(index, 1);
             localStorage.setItem("Complete Todos", JSON.stringify(comArr));
@@ -378,8 +382,8 @@ function comDeleteTask(index) {
 
 
 deleteAllComTodos.addEventListener('click', () => {
+    showConfirm("Are you want to delete?", (content = ""), function (result) {
 
-    showConfirm("Are you want to delete?", function (result) {
         if (result) {
             comArr = []
 
@@ -404,9 +408,9 @@ function back(index) {
         formattedTaskName += taskName.slice(i, i + maxLength) + '\n'
     }
 
-    formattedTaskName = formattedTaskName.trim();
+    //formattedTaskName = formattedTaskName.trim();
 
-    showConfirm(`Are you want to move task back?:  "${formattedTaskName}"`, function (result) {
+    showConfirm(`Are you want to move task back?\n\n`, formattedTaskName, function (result) {
         if (result) {
             let backTodo = comArr.splice(index, 1);
 
