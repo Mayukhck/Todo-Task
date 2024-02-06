@@ -19,7 +19,11 @@ body {
 
 .nContainer {
     border: none;
-    transform: translate(350px, 100px);
+    bottom: 1%;
+    left: 35%;
+    transform: translateX(50%);
+    z-index: 999;
+    position: fixed;
 }
 
 .notification {
@@ -452,9 +456,11 @@ li:hover .action {
 @media only screen and (max-width: 1000px) {
     .nContainer {
         border: none;
-        transform: translateY(50px);
-        position: sticky;
-        z-index: 20;
+        bottom: 1%;
+        left: 5%;
+        transform: translateX(50%);
+        z-index: 999;
+        position: fixed;
     }
 
     .notification {
