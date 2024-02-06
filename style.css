@@ -19,7 +19,7 @@ body {
 
 .nContainer {
     border: none;
-    transform: translateX(400px);
+    transform: translate(350px, 100px);
 }
 
 .notification {
