@@ -104,7 +104,6 @@ body {
     color: #fff;
 }
 
-
 .popTaskBox {
     max-width: 350px;
     max-height: 100px;
@@ -123,7 +122,6 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, .1),
         0 8px 16px rgba(0, 0, 0, 0.1);
 }
-
 
 .container h4 {
     font-size: 30px;
@@ -160,7 +158,6 @@ body {
     border-bottom: 3px solid green;
 }
 
-
 .addInput .fa-pen {
     position: absolute;
     top: 16px;
@@ -189,13 +186,11 @@ body {
     opacity: 1;
 }
 
-
 .addInput .saveTask {
     opacity: 1;
     pointer-events: auto;
     font-size: 25px;
 }
-
 
 .btns_filter {
     padding-right: 20px;
@@ -203,7 +198,6 @@ body {
     display: flex;
     justify-content: space-between;
 }
-
 
 .btns_filter .btns {
     width: 50%;
@@ -252,7 +246,6 @@ body {
     transition: 0.2s;
 }
 
-
 .btns_filter .filter {
     width: 48%;
 }
@@ -267,7 +260,6 @@ body {
     font-size: 16px;
     letter-spacing: 1.3px;
 }
-
 
 .todosContainer {
     width: 100%;
@@ -320,7 +312,7 @@ ul li {
     box-shadow: 0.1px 0.1px 2px rgba(0, 0, 0, 0.3);
     font-family: inherit;
     letter-spacing: 0.8px;
-    cursor: pointer;
+    /* cursor: pointer; */
     word-wrap: break-word;
 }
 
@@ -345,7 +337,6 @@ li:hover .action {
     visibility: visible;
 }
 
-
 .action button {
     border: none;
     outline: none;
@@ -362,7 +353,6 @@ li:hover .action {
     background: #fff;
 }
 
-
 .action.com {
     width: 70px;
     display: flex;
@@ -374,7 +364,6 @@ li:hover .action {
 .action.com button:first-child {
     font-size: 22px;
 }
-
 
 .footer {
     width: 100%;
@@ -431,7 +420,7 @@ li:hover .action {
 
 @media only screen and (max-width: 280px) {
     .container {
-        width: 280px;
+        width: 277px;
         padding: 10px 0 10px 10px;
         border-radius: 8px;
         border: 1.5px solid #999;
@@ -440,7 +429,6 @@ li:hover .action {
             0 8px 16px rgba(0, 0, 0, 0.1);
         transform: translate(0.1%, 0%);
     }
-
 
     .footer button {
         padding: 0px 0px;
@@ -460,7 +448,6 @@ li:hover .action {
     }
 
 }
-
 
 @media only screen and (max-width: 1000px) {
     .nContainer {

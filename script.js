@@ -161,8 +161,6 @@ function deleteTask(index) {
         formattedTaskName += taskToDelete.slice(i, i + maxLength) + '\n';
     }
 
-    //formattedTaskName = formattedTaskName.trim();
-
     showConfirm(`Are you want to delete?\n\n`, formattedTaskName, function (result) {
         if (result) {
             listArr.splice(index, 1);
@@ -172,7 +170,6 @@ function deleteTask(index) {
         }
     });
 }
-
 
 
 function showConfirm(message, content, callback) {
@@ -249,8 +246,6 @@ function editTask(index) {
         formattedTaskName += currentTaskName.slice(i, i + maxLineLength) + '\n';
     }
 
-    /* formattedTaskName = formattedTaskName.trim(); */
-
     showConfirm(`Are you sure you want to edit task?\n\n`, formattedTaskName, function (result) {
         if (result) {
             editInputField.value = index;
@@ -282,8 +277,6 @@ function editTask(index) {
         }
     });
 }
-
-
 
 showCompleteTask()
 
@@ -368,8 +361,6 @@ function comDeleteTask(index) {
         formattedTaskName += taskName.slice(i, i + maxLength) + '\n'
     }
 
-    /* formattedTaskName = formattedTaskName.trim(); */
-
     showConfirm(`Are you want to delete task?\n\n`, formattedTaskName, function (result) {
         if (result) {
             comArr.splice(index, 1);
@@ -407,8 +398,6 @@ function back(index) {
     for (let i = 0; i < taskName.length; i += maxLength) {
         formattedTaskName += taskName.slice(i, i + maxLength) + '\n'
     }
-
-    //formattedTaskName = formattedTaskName.trim();
 
     showConfirm(`Are you want to move task back?\n\n`, formattedTaskName, function (result) {
         if (result) {
