@@ -104,10 +104,16 @@ function addTask() {
 
         addTaskBtn.classList.remove("active");
         showNotification("ToDo is Added Successfully", "success");
+
+        let newTaskElement = document.querySelector('.pending li'); //for scroll top
+        if (newTaskElement) {
+            newTaskElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
     } else {
         showNotification("Task already exists", "danger");
     }
 }
+
 
 
 function isValidInput(input) {
