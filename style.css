@@ -17,29 +17,30 @@ body {
     user-select: none;
 }
 
-.nContainer {
-    border: none;
-    bottom: 1%;
-    left: 29%;
-    transform: translateX(50%);
-    z-index: 999;
+
+/* for toast notification */
+#notification-popup {
     position: fixed;
-    padding: 30px;
-}
-
-.notification {
+    bottom: 6%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 340px;
+    padding: 15px;
+    border-radius: 5px;
+    /* Ensure it's above other content */
+    z-index: 999;
+    color: white;
     text-align: center;
-    margin-bottom: 10px;
-    padding: 30px;
-    color: #000;
-    font-size: 18px;
+    font-weight: bold;
+    /* Smooth fade-in/out effect */
+    transition: opacity 0.3s ease-in-out;
 }
 
-.success {
-    background-color: rgb(58, 214, 58);
+#notification-popup.success {
+    background-color: green;
 }
 
-.danger {
+#notification-popup.danger {
     background-color: red;
 }
 
@@ -178,6 +179,7 @@ body {
     font-size: 40px;
     border-radius: 5px;
     cursor: pointer;
+    /* cursor: not-allowed; */
     pointer-events: none;
     color: #fff;
     background: #1877f2;
@@ -379,6 +381,11 @@ li:hover .action {
     padding-right: 20px;
 }
 
+.hidden {
+    display: none;
+}
+
+
 .footer button {
     padding: 10px 12px;
     font-size: 16px;
@@ -411,6 +418,19 @@ li:hover .action {
 }
 
 @media only screen and (max-width: 500px) {
+    .container {
+        width: 390px;
+        padding: 20px 0 20px 20px;
+        border-radius: 8px;
+        border: 1.5px solid #999;
+        background: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, .1),
+            0 8px 16px rgba(0, 0, 0, 0.1);
+        transform: translate(0.1%, 0%);
+    }
+}
+
+@media only screen and (max-width: 375px) {
     .container {
         width: 350px;
         padding: 20px 0 20px 20px;
@@ -455,22 +475,6 @@ li:hover .action {
 }
 
 @media only screen and (max-width: 1000px) {
-    /* .nContainer {
-        border: none;
-        bottom: 1%;
-        left: 5%;
-        transform: translateX(50%);
-        z-index: 999;
-        position: fixed;
-    }
-
-    .notification {
-        text-align: center;
-        margin-bottom: 10px;
-        padding: 10px 10px 10px 30px;
-        color: #000;
-        font-size: 18px;
-    } */
 
     li .action {
         position: absolute;

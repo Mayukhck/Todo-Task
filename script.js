@@ -57,13 +57,22 @@ addInputField.addEventListener('input', (event) => {
 });
 
 
-function showNotification(text, id) {
-    notification.textContent = text
-    notification.className = id;
+function showNotification(message, type) {
+    const popUp = document.createElement("div");
+    popUp.id = "notification-popup";
+    popUp.classList.add(type); // Add class for color (e.g., "success", "danger")
+
+    const content = document.createElement("div");
+    content.classList.add("popup-content");
+    content.textContent = message;
+
+    popUp.appendChild(content);
+    document.body.appendChild(popUp);
+
+    // Auto-hide after a few seconds
     setTimeout(() => {
-        notification.textContent = ""
-        notification.classList.remove(`${id}`)
-    }, 1100)
+        document.body.removeChild(popUp);
+    }, 1000);
 }
 
 
@@ -81,6 +90,7 @@ addInputField.addEventListener("keypress", (e) => {
 addTaskBtn.onclick = () => {
     addTask();
 };
+
 
 
 function addTask() {
@@ -104,7 +114,6 @@ function addTask() {
         showtask();
 
         addInputField.value = "";
-        addInputField.focus();
 
         addTaskBtn.classList.remove("active");
         showNotification("ToDo is Added Successfully", "success");
@@ -130,6 +139,7 @@ function showtask() {
     let getLocalStorage = localStorage.getItem("Pending Todos")
     if (getLocalStorage === null) {
         listArr = []
+
     }
     else {
         listArr = JSON.parse(getLocalStorage)
@@ -137,11 +147,12 @@ function showtask() {
 
     pendingNum.textContent = listArr.length
 
-    if (listArr.length >= 1) {
-        deleteAllPenTodos.classList.add('active')
-    }
-    else {
-        deleteAllPenTodos.classList.remove('active')
+    if (listArr.length > 0) {
+        deleteAllPenTodos.classList.add('active');
+        deleteAllPenTodos.classList.remove('hidden');
+    } else {
+        deleteAllPenTodos.classList.remove('active');
+        deleteAllPenTodos.classList.add('hidden');
     }
 
     let newTodos = ""
@@ -343,10 +354,11 @@ function showCompleteTask() {
     completeNum.textContent = comArr.length
 
     if (comArr.length >= 1) {
-        deleteAllComTodos.classList.add("active")
-    }
-    else {
-        deleteAllComTodos.classList.remove("active")
+        deleteAllComTodos.classList.add("active");
+        deleteAllComTodos.style.display = "inline-block"; // Change 'visible' to 'inline-block' for correct display
+    } else {
+        deleteAllComTodos.classList.remove("active");
+        deleteAllComTodos.style.display = "none";
     }
 
     let completeTask = ""
