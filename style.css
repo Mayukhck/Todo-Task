@@ -19,8 +19,8 @@ body {
 
 .nContainer {
     border: none;
-    bottom: -1%;
-    left: 35%;
+    bottom: 1%;
+    left: 29%;
     transform: translateX(50%);
     z-index: 999;
     position: fixed;

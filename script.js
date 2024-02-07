@@ -406,25 +406,27 @@ function back(index) {
     let formattedTaskName = '';
 
     for (let i = 0; i < taskName.length; i += maxLength) {
-        formattedTaskName += taskName.slice(i, i + maxLength) + '\n'
+        formattedTaskName += taskName.slice(i, i + maxLength) + '\n';
     }
 
-    showConfirm(`Are you want to move task back?\n`, formattedTaskName, function (result) {
+    showConfirm(`Are you sure you want to move the task back?\n`, formattedTaskName, function (result) {
         if (result) {
             let backTodo = comArr.splice(index, 1);
 
             localStorage.setItem("Complete Todos", JSON.stringify(comArr));
             showCompleteTask();
 
-            backTodo.forEach(back => {
-                listArr.push(back);
-            });
+            let getLocalStoragePending = localStorage.getItem("Pending Todos");
+            let listArr = JSON.parse(getLocalStoragePending);
+
+            listArr.unshift(backTodo[0]);
 
             localStorage.setItem("Pending Todos", JSON.stringify(listArr));
             showtask();
         }
     });
 }
+
 
 
 function filterPenTask() {
