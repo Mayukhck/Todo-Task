@@ -72,8 +72,8 @@ showtask()
 
 addInputField.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
+        /* btns[0].focus(); */
         addTask();
-        /*  btns[0].focus(); */
     }
 });
 
@@ -87,7 +87,7 @@ function addTask() {
     let userData = addInputField.value.trim();
 
     if (userData.length === 0 || !isValidInput(userData)) {
-        showNotification("Invalid input. Please avoid special characters.", "danger");
+        showNotification("Please avoid special characters.", "danger");
         return;
     }
 
@@ -104,6 +104,7 @@ function addTask() {
         showtask();
 
         addInputField.value = "";
+        addInputField.focus();
 
         addTaskBtn.classList.remove("active");
         showNotification("ToDo is Added Successfully", "success");
@@ -116,6 +117,7 @@ function addTask() {
         showNotification("Task already exists", "danger");
     }
 }
+
 
 
 function isValidInput(input) {
