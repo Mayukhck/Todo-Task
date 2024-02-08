@@ -188,14 +188,19 @@ function deleteTask(index) {
         formattedTaskName += taskToDelete.slice(i, i + maxLength) + '\n';
     }
 
-    showConfirm(`Are you want to delete?\n`, formattedTaskName, function (result) {
-        if (result) {
-            listArr.splice(index, 1);
-            localStorage.setItem("Pending Todos", JSON.stringify(listArr));
-            showtask();
-            showNotification("Task is Deleted Successfully", "danger");
-        }
-    });
+    if (!isEditing) {
+        showConfirm(`Are you want to delete?\n`, formattedTaskName, function (result) {
+            if (result) {
+                listArr.splice(index, 1);
+                localStorage.setItem("Pending Todos", JSON.stringify(listArr));
+                showtask();
+                showNotification("Task is Deleted Successfully", "danger");
+            }
+        });
+    } else {
+        showNotification("Deletion is disabled during editing.", "danger");
+    }
+
 }
 
 
@@ -261,8 +266,12 @@ deleteAllPenTodos.addEventListener('click', () => {
 })
 
 
+let isEditing = false;
+
 
 function editTask(index) {
+    isEditing = true;
+
     let getLocalStorage = localStorage.getItem("Pending Todos");
     let listArr = JSON.parse(getLocalStorage);
     let currentTaskName = listArr[index];
@@ -285,31 +294,40 @@ function editTask(index) {
 
             saveTaskBtn.onclick = () => {
                 let editedValue = addInputField.value.trim().toLowerCase();
-                if (editedValue.length > 0) {
-                    let isDuplicate = listArr.map(item => item.toLowerCase()).includes(editedValue);
+                // Regular expression to match only numbers and alphabets
+                let isValidInput = /^[a-zA-Z0-9]+$/.test(editedValue);
 
-                    if (!isDuplicate) {
-                        listArr.splice(index, 1);
-                        listArr.unshift(addInputField.value.trim());
-                        localStorage.setItem("Pending Todos", JSON.stringify(listArr));
-                        showtask();
-                        addInputField.value = "";
-                        addTaskBtn.style.display = "block";
-                        saveTaskBtn.style.display = "none";
+                if (isValidInput) {
+                    if (editedValue.length > 0) {
+                        let isDuplicate = listArr.map(item => item.toLowerCase()).includes(editedValue);
 
-                        addTaskBtn.classList.remove("active");
-                        showNotification("ToDo is Edited Successfully", "success");
+                        if (!isDuplicate) {
+                            listArr.splice(index, 1);
+                            listArr.unshift(addInputField.value.trim());
+                            localStorage.setItem("Pending Todos", JSON.stringify(listArr));
+                            showtask();
+                            addInputField.value = "";
+                            addTaskBtn.style.display = "block";
+                            saveTaskBtn.style.display = "none";
+
+                            addTaskBtn.classList.remove("active");
+                            showNotification("ToDo is Edited Successfully", "success");
+                            // Reset isEditing flag after editing is complete
+                            isEditing = false;
+                        } else {
+                            showNotification("This task already exists.", "danger");
+                        }
                     } else {
-                        showNotification("This task already exists.", "danger");
+                        showNotification("Please enter a valid task", "danger");
                     }
                 } else {
-                    showNotification("Please enter a valid task", "danger");
+                    showNotification("Task should containing only numbers and alphabets.", "danger");
                 }
             };
+
         }
     });
 }
-
 
 
 showCompleteTask()
@@ -321,19 +339,23 @@ function completeTask(index) {
     const taskName = listArr[index];
     const formattedTaskName = breakTextIntoLines(taskName, 30);
 
-    showConfirm(`Are you want to complete the task?\n`, formattedTaskName, function (result) {
-        if (result) {
-            let completedTask = listArr.splice(index, 1)[0];
+    if (!isEditing) {
+        showConfirm(`Are you want to complete the task?\n`, formattedTaskName, function (result) {
+            if (result) {
+                let completedTask = listArr.splice(index, 1)[0];
 
-            localStorage.setItem('Pending Todos', JSON.stringify(listArr));
-            showtask();
+                localStorage.setItem('Pending Todos', JSON.stringify(listArr));
+                showtask();
 
-            comArr.push(completedTask);
-            localStorage.setItem("Complete Todos", JSON.stringify(comArr));
-            showCompleteTask();
-            showNotification("You have completed Task", "success");
-        }
-    });
+                comArr.push(completedTask);
+                localStorage.setItem("Complete Todos", JSON.stringify(comArr));
+                showCompleteTask();
+                showNotification("You have completed Task", "success");
+            }
+        });
+    } else {
+        showNotification("Completion is disabled during editing.", "danger");
+    }
 }
 
 
