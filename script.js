@@ -46,13 +46,14 @@ btns[1].addEventListener('click', () => {
 
 
 addInputField.addEventListener('input', (event) => {
-
     var inputVal = addInputField.value;
 
     if (inputVal.trim() !== "") {
         addTaskBtn.classList.add('active');
+        saveTaskBtn.style.cursor = "pointer";
     } else {
         addTaskBtn.classList.remove('active');
+        saveTaskBtn.style.cursor = "not-allowed";
     }
 });
 
@@ -295,6 +296,8 @@ function editTask(index) {
                         addInputField.value = "";
                         addTaskBtn.style.display = "block";
                         saveTaskBtn.style.display = "none";
+
+                        addTaskBtn.classList.remove("active");
                         showNotification("ToDo is Edited Successfully", "success");
                     } else {
                         showNotification("This task already exists.", "danger");

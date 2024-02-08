@@ -172,7 +172,7 @@ body {
     opacity: 0.5;
 }
 
-.addTask {
+.addInput button {
     width: 11%;
     height: 50px;
     line-height: 51px;
@@ -189,9 +189,7 @@ body {
 
 .addTask.active {
     cursor: pointer;
-    /* Change cursor back to pointer when button is active */
 }
-
 
 .addInput .addTask.active {
     pointer-events: auto;
