@@ -109,6 +109,7 @@ function addTask() {
     allTasksArr = allTasksArr.map(item => item.toLowerCase());
 
     if (!allTasksArr.includes(userData.toLowerCase())) {
+
         pendingListArr.unshift(userData);
         localStorage.setItem("Pending Todos", JSON.stringify(pendingListArr));
         showtask();
@@ -122,10 +123,14 @@ function addTask() {
         if (newTaskElement) {
             newTaskElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
+
+        btns[0].click(); // This line triggers the click event on btns[0]
+
     } else {
         showNotification("Task already exists", "danger");
     }
 }
+
 
 
 
@@ -255,6 +260,7 @@ deleteAllPenTodos.addEventListener('click', () => {
 })
 
 
+
 function editTask(index) {
     let getLocalStorage = localStorage.getItem("Pending Todos");
     let listArr = JSON.parse(getLocalStorage);
@@ -273,6 +279,8 @@ function editTask(index) {
             addInputField.value = currentTaskName;
             addTaskBtn.style.display = "none";
             saveTaskBtn.style.display = "block";
+
+            addInputField.focus();
 
             saveTaskBtn.onclick = () => {
                 let editedValue = addInputField.value.trim().toLowerCase();
@@ -298,6 +306,8 @@ function editTask(index) {
         }
     });
 }
+
+
 
 showCompleteTask()
 

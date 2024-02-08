@@ -172,21 +172,26 @@ body {
     opacity: 0.5;
 }
 
-.addInput button {
+.addTask {
     width: 11%;
     height: 50px;
     line-height: 51px;
     font-size: 40px;
     border-radius: 5px;
-    cursor: pointer;
-    /* cursor: not-allowed; */
-    pointer-events: none;
+    cursor: not-allowed;
+    /* Change cursor to not allowed */
     color: #fff;
     background: #1877f2;
     border: none;
     outline: none;
     opacity: 0.5;
 }
+
+.addTask.active {
+    cursor: pointer;
+    /* Change cursor back to pointer when button is active */
+}
+
 
 .addInput .addTask.active {
     pointer-events: auto;
