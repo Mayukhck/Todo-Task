@@ -16,7 +16,9 @@ var btns = document.querySelectorAll('.btns button'),
     deleteAllComTodos = document.querySelector('.comTodos button'),
     pendingNum = document.querySelector('.pendingNum'),
     completeNum = document.querySelector('.completeNum')
-let editExsistingTask = "task@123";
+let editExsistingTask = "";
+let comArr = [];
+let listArr = [];
 
 btns[0].addEventListener('click', () => {
     showChange.style.left = "0"
@@ -70,7 +72,6 @@ function showNotification(message, type) {
     popUp.appendChild(content);
     document.body.appendChild(popUp);
 
-    // Auto-hide after a few seconds
     setTimeout(() => {
         document.body.removeChild(popUp);
     }, 1000);
@@ -82,7 +83,6 @@ showtask()
 
 addInputField.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
-        console.log("add");
         e.preventDefault(); // Prevent form submission
         addTask(editExsistingTask);
 
@@ -90,11 +90,9 @@ addInputField.addEventListener('keypress', (e) => {
 });
 
 
-
 addTaskBtn.onclick = () => {
     addTask(editExsistingTask);
 };
-
 
 
 function addTask(editExsistingTaskUpdate) {
@@ -114,7 +112,7 @@ function addTask(editExsistingTaskUpdate) {
 
     if (pendingListArr.includes(editExsistingTaskUpdate)) {
         pendingListArr.splice(pendingListArr.indexOf(editExsistingTaskUpdate), 1);
-        editExsistingTask = "task@123"
+        editExsistingTask = ""
     }
 
     if (!allTasksArr.includes(userData.toLowerCase())) {
@@ -125,7 +123,7 @@ function addTask(editExsistingTaskUpdate) {
 
         addInputField.value = "";
 
-        if (editExsistingTaskUpdate == "task@123") {
+        if (editExsistingTaskUpdate == "") {
             showNotification("ToDo is added Successfully", "success");
         } else {
             showNotification("ToDo is edited Successfully", "success");
@@ -135,14 +133,13 @@ function addTask(editExsistingTaskUpdate) {
         }
 
         addTaskBtn.classList.remove("active");
-        /* showNotification("ToDo is Added Successfully", "success"); */
 
         let newTaskElement = document.querySelector('.pending li'); //for scroll top
         if (newTaskElement) {
             newTaskElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        btns[0].click(); // This line triggers the click event on btns[0]
+        btns[0].click();
 
     } else {
         showNotification("Task already exists", "danger");
@@ -297,9 +294,9 @@ function editTask(index) {
             saveTaskBtn.style.display = "block";
 
             // Add the line to focus on editInputField
-            addInputField.focus(); 1
+            addInputField.focus();
 
-            saveTaskBtn.onclick = saveEditedTask; // Handle click event for saveTaskBtn
+            saveTaskBtn.onclick = saveEditedTask;
         }
     });
 
@@ -477,7 +474,6 @@ function back(index) {
         }
     });
 }
-
 
 
 function filterPenTask() {
