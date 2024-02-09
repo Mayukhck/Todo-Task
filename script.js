@@ -16,7 +16,7 @@ var btns = document.querySelectorAll('.btns button'),
     deleteAllComTodos = document.querySelector('.comTodos button'),
     pendingNum = document.querySelector('.pendingNum'),
     completeNum = document.querySelector('.completeNum')
-
+let editExsistingTask = "task@123";
 
 btns[0].addEventListener('click', () => {
     showChange.style.left = "0"
@@ -80,20 +80,24 @@ function showNotification(message, type) {
 showtask()
 
 
-addInputField.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") {
-        addTask();
+addInputField.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        console.log("add");
+        e.preventDefault(); // Prevent form submission
+        addTask(editExsistingTask);
+
     }
 });
 
 
+
 addTaskBtn.onclick = () => {
-    addTask();
+    addTask(editExsistingTask);
 };
 
 
 
-function addTask() {
+function addTask(editExsistingTaskUpdate) {
     let userData = addInputField.value.trim();
 
     if (userData.length === 0 || !isValidInput(userData)) {
@@ -108,6 +112,11 @@ function addTask() {
 
     allTasksArr = allTasksArr.map(item => item.toLowerCase());
 
+    if (pendingListArr.includes(editExsistingTaskUpdate)) {
+        pendingListArr.splice(pendingListArr.indexOf(editExsistingTaskUpdate), 1);
+        editExsistingTask = "task@123"
+    }
+
     if (!allTasksArr.includes(userData.toLowerCase())) {
 
         pendingListArr.unshift(userData);
@@ -116,8 +125,17 @@ function addTask() {
 
         addInputField.value = "";
 
+        if (editExsistingTaskUpdate == "task@123") {
+            showNotification("ToDo is added Successfully", "success");
+        } else {
+            showNotification("ToDo is edited Successfully", "success");
+            addTaskBtn.style.display = "block";
+            saveTaskBtn.style.display = "none";
+            btns[0].click()
+        }
+
         addTaskBtn.classList.remove("active");
-        showNotification("ToDo is Added Successfully", "success");
+        /* showNotification("ToDo is Added Successfully", "success"); */
 
         let newTaskElement = document.querySelector('.pending li'); //for scroll top
         if (newTaskElement) {
@@ -185,7 +203,7 @@ function deleteTask(index) {
         formattedTaskName += taskToDelete.slice(i, i + maxLength) + '\n';
     }
 
-    showConfirm(`Are you want to delete?\n`, formattedTaskName, function (result) {
+    showConfirm(`Are you want to delete?\n\n`, formattedTaskName, function (result) {
         if (result) {
             listArr.splice(index, 1);
             localStorage.setItem("Pending Todos", JSON.stringify(listArr));
@@ -193,8 +211,6 @@ function deleteTask(index) {
             showNotification("Task is Deleted Successfully", "danger");
         }
     });
-
-
 }
 
 
@@ -260,11 +276,7 @@ deleteAllPenTodos.addEventListener('click', () => {
 })
 
 
-
-
 function editTask(index) {
-
-
     let getLocalStorage = localStorage.getItem("Pending Todos");
     let listArr = JSON.parse(getLocalStorage);
     let currentTaskName = listArr[index];
@@ -276,50 +288,52 @@ function editTask(index) {
         formattedTaskName += currentTaskName.slice(i, i + maxLineLength) + '\n';
     }
 
-    showConfirm(`Are you want to edit task?\n`, formattedTaskName, function (result) {
+    showConfirm(`Are you want to edit task?\n\n`, formattedTaskName, function (result) {
         if (result) {
+            editExsistingTask = currentTaskName;
             editInputField.value = index;
             addInputField.value = currentTaskName;
             addTaskBtn.style.display = "none";
             saveTaskBtn.style.display = "block";
 
             // Add the line to focus on editInputField
-            addInputField.focus();
+            addInputField.focus(); 1
 
-            saveTaskBtn.onclick = () => {
-                let editedValue = addInputField.value.trim().toLowerCase();
-                // Regular expression to match only numbers and alphabets
-                let isValidInput = /^[a-zA-Z0-9]+$/.test(editedValue);
-
-                if (isValidInput) {
-                    if (editedValue.length > 0) {
-                        let isDuplicate = listArr.map(item => item.toLowerCase()).includes(editedValue);
-
-                        if (!isDuplicate) {
-                            listArr.splice(index, 1);
-                            listArr.unshift(addInputField.value.trim());
-                            localStorage.setItem("Pending Todos", JSON.stringify(listArr));
-                            showtask();
-                            addInputField.value = "";
-                            addTaskBtn.style.display = "block";
-                            saveTaskBtn.style.display = "none";
-
-                            addTaskBtn.classList.remove("active");
-                            showNotification("ToDo is Edited Successfully", "success");
-                            // Reset isEditing flag after editing is complete
-                            isEditing = false;
-                        } else {
-                            showNotification("This task already exists.", "danger");
-                        }
-                    } else {
-                        showNotification("Please enter a valid task", "danger");
-                    }
-                } else {
-                    showNotification("Task should containing only numbers and alphabets.", "danger");
-                }
-            };
+            saveTaskBtn.onclick = saveEditedTask; // Handle click event for saveTaskBtn
         }
     });
+
+    function saveEditedTask() {
+        let editedValue = addInputField.value.trim().toLowerCase();
+        let isValidInput = /^[a-zA-Z0-9]+$/.test(editedValue);
+
+        if (isValidInput) {
+            if (editedValue.length > 0) {
+                let isDuplicate = listArr.map(item => item.toLowerCase()).includes(editedValue);
+
+                if (!isDuplicate) {
+                    listArr.splice(index, 1);
+                    listArr.unshift(addInputField.value.trim());
+                    localStorage.setItem("Pending Todos", JSON.stringify(listArr));
+                    showtask();
+                    addInputField.value = "";
+                    addTaskBtn.style.display = "block";
+                    saveTaskBtn.style.display = "none";
+
+                    addTaskBtn.classList.remove("active");
+                    showNotification("ToDo is Edited Successfully", "success");
+                    // Reset isEditing flag after editing is complete
+                    isEditing = false;
+                } else {
+                    showNotification("This task already exists.", "danger");
+                }
+            } else {
+                showNotification("Please enter a valid task", "danger");
+            }
+        } else {
+            showNotification("Please avoid special characters.", "danger");
+        }
+    }
 }
 
 
@@ -333,7 +347,7 @@ function completeTask(index) {
     const formattedTaskName = breakTextIntoLines(taskName, 30);
 
 
-    showConfirm(`Are you want to complete the task?\n`, formattedTaskName, function (result) {
+    showConfirm(`Are you want to complete the task?\n\n`, formattedTaskName, function (result) {
         if (result) {
             let completedTask = listArr.splice(index, 1)[0];
 
@@ -408,7 +422,7 @@ function comDeleteTask(index) {
         formattedTaskName += taskName.slice(i, i + maxLength) + '\n'
     }
 
-    showConfirm(`Are you want to delete task?\n`, formattedTaskName, function (result) {
+    showConfirm(`Are you want to delete task?\n\n`, formattedTaskName, function (result) {
         if (result) {
             comArr.splice(index, 1);
             localStorage.setItem("Complete Todos", JSON.stringify(comArr));
@@ -446,7 +460,7 @@ function back(index) {
         formattedTaskName += taskName.slice(i, i + maxLength) + '\n';
     }
 
-    showConfirm(`Are you sure you want to move the task back?\n`, formattedTaskName, function (result) {
+    showConfirm(`Are you sure you want to move the task back?\n\n`, formattedTaskName, function (result) {
         if (result) {
             let backTodo = comArr.splice(index, 1);
 
