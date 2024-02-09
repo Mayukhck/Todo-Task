@@ -82,7 +82,6 @@ showtask()
 
 addInputField.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
-        /* btns[0].focus(); */
         addTask();
     }
 });
@@ -131,8 +130,6 @@ function addTask() {
         showNotification("Task already exists", "danger");
     }
 }
-
-
 
 
 function isValidInput(input) {
@@ -188,18 +185,15 @@ function deleteTask(index) {
         formattedTaskName += taskToDelete.slice(i, i + maxLength) + '\n';
     }
 
-    if (!isEditing) {
-        showConfirm(`Are you want to delete?\n`, formattedTaskName, function (result) {
-            if (result) {
-                listArr.splice(index, 1);
-                localStorage.setItem("Pending Todos", JSON.stringify(listArr));
-                showtask();
-                showNotification("Task is Deleted Successfully", "danger");
-            }
-        });
-    } else {
-        showNotification("Deletion is disabled during editing.", "danger");
-    }
+    showConfirm(`Are you want to delete?\n`, formattedTaskName, function (result) {
+        if (result) {
+            listArr.splice(index, 1);
+            localStorage.setItem("Pending Todos", JSON.stringify(listArr));
+            showtask();
+            showNotification("Task is Deleted Successfully", "danger");
+        }
+    });
+
 
 }
 
@@ -266,11 +260,10 @@ deleteAllPenTodos.addEventListener('click', () => {
 })
 
 
-let isEditing = false;
 
 
 function editTask(index) {
-    isEditing = true;
+
 
     let getLocalStorage = localStorage.getItem("Pending Todos");
     let listArr = JSON.parse(getLocalStorage);
@@ -290,6 +283,7 @@ function editTask(index) {
             addTaskBtn.style.display = "none";
             saveTaskBtn.style.display = "block";
 
+            // Add the line to focus on editInputField
             addInputField.focus();
 
             saveTaskBtn.onclick = () => {
@@ -324,7 +318,6 @@ function editTask(index) {
                     showNotification("Task should containing only numbers and alphabets.", "danger");
                 }
             };
-
         }
     });
 }
@@ -339,23 +332,20 @@ function completeTask(index) {
     const taskName = listArr[index];
     const formattedTaskName = breakTextIntoLines(taskName, 30);
 
-    if (!isEditing) {
-        showConfirm(`Are you want to complete the task?\n`, formattedTaskName, function (result) {
-            if (result) {
-                let completedTask = listArr.splice(index, 1)[0];
 
-                localStorage.setItem('Pending Todos', JSON.stringify(listArr));
-                showtask();
+    showConfirm(`Are you want to complete the task?\n`, formattedTaskName, function (result) {
+        if (result) {
+            let completedTask = listArr.splice(index, 1)[0];
 
-                comArr.push(completedTask);
-                localStorage.setItem("Complete Todos", JSON.stringify(comArr));
-                showCompleteTask();
-                showNotification("You have completed Task", "success");
-            }
-        });
-    } else {
-        showNotification("Completion is disabled during editing.", "danger");
-    }
+            localStorage.setItem('Pending Todos', JSON.stringify(listArr));
+            showtask();
+
+            comArr.push(completedTask);
+            localStorage.setItem("Complete Todos", JSON.stringify(comArr));
+            showCompleteTask();
+            showNotification("You have completed Task", "success");
+        }
+    });
 }
 
 
