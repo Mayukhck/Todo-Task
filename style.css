@@ -40,6 +40,10 @@ body {
     background-color: red;
 }
 
+#notification-popup.warning {
+    background-color: #f0f2f5;
+}
+
 .confirm-box {
     background: none;
     width: 100%;

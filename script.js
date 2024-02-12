@@ -85,7 +85,6 @@ addInputField.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
         e.preventDefault(); // Prevent form submission
         addTask(editExsistingTask);
-
     }
 });
 
@@ -98,8 +97,11 @@ addTaskBtn.onclick = () => {
 function addTask(editExsistingTaskUpdate) {
     let userData = addInputField.value.trim();
 
-    if (userData.length === 0 || !isValidInput(userData)) {
-        showNotification("Please avoid special characters.", "danger");
+    if (!isValidInput(userData)) {
+        showNotification("special charactors are not allowed", "danger");
+        return;
+    } else if (userData.length === 0) {
+        showNotification("", "warning");
         return;
     }
 
@@ -126,7 +128,7 @@ function addTask(editExsistingTaskUpdate) {
         if (editExsistingTaskUpdate == "") {
             showNotification("ToDo is added Successfully", "success");
         } else {
-            showNotification("ToDo is edited Successfully", "success");
+            showNotification("ToDo is edited Successfully1", "success");
             addTaskBtn.style.display = "block";
             saveTaskBtn.style.display = "none";
             btns[0].click()
@@ -285,20 +287,16 @@ function editTask(index) {
         formattedTaskName += currentTaskName.slice(i, i + maxLineLength) + '\n';
     }
 
-    showConfirm(`Are you want to edit task?\n\n`, formattedTaskName, function (result) {
-        if (result) {
-            editExsistingTask = currentTaskName;
-            editInputField.value = index;
-            addInputField.value = currentTaskName;
-            addTaskBtn.style.display = "none";
-            saveTaskBtn.style.display = "block";
+    editExsistingTask = currentTaskName;
+    editInputField.value = index;
+    addInputField.value = currentTaskName;
+    addTaskBtn.style.display = "none";
+    saveTaskBtn.style.display = "block";
 
-            // Add the line to focus on editInputField
-            addInputField.focus();
+    // Add the line to focus on editInputField
+    addInputField.focus();
 
-            saveTaskBtn.onclick = saveEditedTask;
-        }
-    });
+    saveTaskBtn.onclick = saveEditedTask;
 
     function saveEditedTask() {
         let editedValue = addInputField.value.trim().toLowerCase();
@@ -319,8 +317,6 @@ function editTask(index) {
 
                     addTaskBtn.classList.remove("active");
                     showNotification("ToDo is Edited Successfully", "success");
-                    // Reset isEditing flag after editing is complete
-                    isEditing = false;
                 } else {
                     showNotification("This task already exists.", "danger");
                 }
