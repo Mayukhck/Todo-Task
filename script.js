@@ -83,7 +83,6 @@ showtask()
 
 addInputField.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
-        e.preventDefault(); // Prevent form submission
         addTask(editExsistingTask);
     }
 });
