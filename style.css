@@ -41,7 +41,7 @@ body {
 }
 
 #notification-popup.warning {
-    background-color: #f0f2f5;
+    background-color: none;
 }
 
 .confirm-box {
