@@ -63,7 +63,7 @@ addInputField.addEventListener('input', (event) => {
 function showNotification(message, type) {
     const popUp = document.createElement("div");
     popUp.id = "notification-popup";
-    popUp.classList.add(type); // Add class for color (e.g., "success", "danger")
+    popUp.classList.add(type);
 
     const content = document.createElement("div");
     content.classList.add("popup-content");
@@ -261,7 +261,7 @@ function showConfirm(message, content, callback) {
 
 deleteAllPenTodos.addEventListener('click', () => {
 
-    showConfirm("Are you want to delete?", (content = ""), function (result) {
+    showConfirm("Are you want to delete All Task?", (content = ""), function (result) {
         if (result) {
             listArr = []
 
@@ -426,7 +426,7 @@ function comDeleteTask(index) {
 
 
 deleteAllComTodos.addEventListener('click', () => {
-    showConfirm("Are you want to delete?", (content = ""), function (result) {
+    showConfirm("Are you want to delete All Task?", (content = ""), function (result) {
 
         if (result) {
             comArr = []
