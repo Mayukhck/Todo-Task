@@ -240,7 +240,7 @@ function showConfirm(message, content, callback) {
 
 deleteAllPenTodos.addEventListener('click', () => {
 
-    showConfirm("Are you want to delete?", (content = ""), function (result) {
+    showConfirm("Are you want to delete All Tasks?", (content = ""), function (result) {
         if (result) {
             listArr = []
 
@@ -361,7 +361,7 @@ function comDeleteTask(index) {
 }
 
 deleteAllComTodos.addEventListener('click', () => {
-    showConfirm("Are you want to delete?", (content = ""), function (result) {
+    showConfirm("Are you want to delete All Tasks?", (content = ""), function (result) {
 
         if (result) {
             comArr = []
