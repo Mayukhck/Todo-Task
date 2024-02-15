@@ -46,7 +46,6 @@ btns[1].addEventListener('click', () => {
     })
 })
 
-
 addInputField.addEventListener('input', (event) => {
     var inputVal = addInputField.value;
 
@@ -59,11 +58,10 @@ addInputField.addEventListener('input', (event) => {
     }
 });
 
-
 function showNotification(message, type) {
     const popUp = document.createElement("div");
     popUp.id = "notification-popup";
-    popUp.classList.add(type);
+    popUp.classList.add(type); // Add class for color (e.g., "success", "danger")
 
     const content = document.createElement("div");
     content.classList.add("popup-content");
@@ -77,9 +75,7 @@ function showNotification(message, type) {
     }, 1000);
 }
 
-
 showtask()
-
 
 addInputField.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
@@ -87,11 +83,9 @@ addInputField.addEventListener('keypress', (e) => {
     }
 });
 
-
 addTaskBtn.onclick = () => {
     addTask(editExsistingTask);
 };
-
 
 function addTask(editExsistingTaskUpdate) {
     let userData = addInputField.value.trim();
@@ -132,14 +126,12 @@ function addTask(editExsistingTaskUpdate) {
             saveTaskBtn.style.display = "none";
             btns[0].click()
         }
-
         addTaskBtn.classList.remove("active");
 
         let newTaskElement = document.querySelector('.pending li'); //for scroll top
         if (newTaskElement) {
             newTaskElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
-
         btns[0].click();
 
     } else {
@@ -147,12 +139,10 @@ function addTask(editExsistingTaskUpdate) {
     }
 }
 
-
 function isValidInput(input) {
     const pattern = /^[a-zA-Z0-9 ]*$/;
     return pattern.test(input);
 }
-
 
 function showtask() {
     let getLocalStorage = localStorage.getItem("Pending Todos")
@@ -188,20 +178,11 @@ function showtask() {
     })
 }
 
-
 function deleteTask(index) {
     let getLocalStorage = localStorage.getItem("Pending Todos");
     let listArr = JSON.parse(getLocalStorage);
     const taskToDelete = listArr[index];
-
-    const maxLength = 30;
-    let formattedTaskName = "";
-
-    for (let i = 0; i < taskToDelete.length; i += maxLength) {
-        formattedTaskName += taskToDelete.slice(i, i + maxLength) + '\n';
-    }
-
-    showConfirm(`Are you want to delete?\n\n`, formattedTaskName, function (result) {
+    showConfirm(`Are you want to delete?\n\n`, taskToDelete, function (result) {
         if (result) {
             listArr.splice(index, 1);
             localStorage.setItem("Pending Todos", JSON.stringify(listArr));
@@ -210,7 +191,6 @@ function deleteTask(index) {
         }
     });
 }
-
 
 function showConfirm(message, content, callback) {
     let confirmBox = document.createElement("div");
@@ -258,10 +238,9 @@ function showConfirm(message, content, callback) {
     }
 }
 
-
 deleteAllPenTodos.addEventListener('click', () => {
 
-    showConfirm("Are you want to delete All Task?", (content = ""), function (result) {
+    showConfirm("Are you want to delete?", (content = ""), function (result) {
         if (result) {
             listArr = []
 
@@ -270,29 +249,18 @@ deleteAllPenTodos.addEventListener('click', () => {
             showNotification("Deleted All Pending Task", "danger")
         }
     });
-
 })
-
 
 function editTask(index) {
     let getLocalStorage = localStorage.getItem("Pending Todos");
     let listArr = JSON.parse(getLocalStorage);
     let currentTaskName = listArr[index];
 
-    const maxLineLength = 30;
-    let formattedTaskName = '';
-
-    for (let i = 0; i < currentTaskName.length; i += maxLineLength) {
-        formattedTaskName += currentTaskName.slice(i, i + maxLineLength) + '\n';
-    }
-
     editExsistingTask = currentTaskName;
     editInputField.value = index;
     addInputField.value = currentTaskName;
     addTaskBtn.style.display = "none";
     saveTaskBtn.style.display = "block";
-
-    // Add the line to focus on editInputField
     addInputField.focus();
 
     saveTaskBtn.onclick = saveEditedTask;
@@ -328,18 +296,13 @@ function editTask(index) {
     }
 }
 
-
 showCompleteTask()
 
 function completeTask(index) {
     let getLocalStorage = localStorage.getItem("Pending Todos");
     let listArr = JSON.parse(getLocalStorage);
-
     const taskName = listArr[index];
-    const formattedTaskName = breakTextIntoLines(taskName, 30);
-
-
-    showConfirm(`Are you want to complete the task?\n\n`, formattedTaskName, function (result) {
+    showConfirm(`Are you want to complete the task?\n\n`, taskName, function (result) {
         if (result) {
             let completedTask = listArr.splice(index, 1)[0];
 
@@ -353,24 +316,6 @@ function completeTask(index) {
         }
     });
 }
-
-
-function breakTextIntoLines(text, maxLineLength) {
-    let formattedText = '';
-    let currentLine = '';
-
-    for (let i = 0; i < text.length; i++) {
-        currentLine += text[i];
-
-        if (currentLine.length >= maxLineLength || i === text.length - 1) {
-            formattedText += currentLine + '\n';
-            currentLine = '';
-        }
-    }
-
-    return formattedText.trim();
-}
-
 
 function showCompleteTask() {
     let getLocalStorage = localStorage.getItem("Complete Todos")
@@ -401,20 +346,11 @@ function showCompleteTask() {
     completeTasks.innerHTML = completeTask
 }
 
-
 function comDeleteTask(index) {
     let getLocalStorage = localStorage.getItem("Complete Todos");
     let comArr = JSON.parse(getLocalStorage);
     let taskName = comArr[index];
-
-    const maxLength = 30;
-    let formattedTaskName = '';
-
-    for (let i = 0; i < taskName.length; i += maxLength) {
-        formattedTaskName += taskName.slice(i, i + maxLength) + '\n'
-    }
-
-    showConfirm(`Are you want to delete task?\n\n`, formattedTaskName, function (result) {
+    showConfirm(`Are you want to delete task?\n\n`, taskName, function (result) {
         if (result) {
             comArr.splice(index, 1);
             localStorage.setItem("Complete Todos", JSON.stringify(comArr));
@@ -424,9 +360,8 @@ function comDeleteTask(index) {
     });
 }
 
-
 deleteAllComTodos.addEventListener('click', () => {
-    showConfirm("Are you want to delete All Task?", (content = ""), function (result) {
+    showConfirm("Are you want to delete?", (content = ""), function (result) {
 
         if (result) {
             comArr = []
@@ -439,20 +374,11 @@ deleteAllComTodos.addEventListener('click', () => {
 
 })
 
-
 function back(index) {
     let getLocalStorageComplete = localStorage.getItem("Complete Todos");
     let comArr = JSON.parse(getLocalStorageComplete);
     let taskName = comArr[index];
-
-    const maxLength = 30;
-    let formattedTaskName = '';
-
-    for (let i = 0; i < taskName.length; i += maxLength) {
-        formattedTaskName += taskName.slice(i, i + maxLength) + '\n';
-    }
-
-    showConfirm(`Are you sure you want to move the task back?\n\n`, formattedTaskName, function (result) {
+    showConfirm(`Are you sure you want to move the task back?\n\n`, taskName, function (result) {
         if (result) {
             let backTodo = comArr.splice(index, 1);
 
@@ -469,7 +395,6 @@ function back(index) {
         }
     });
 }
-
 
 function filterPenTask() {
     let filterInput = document.querySelector('#penTaskFilter').value.toUpperCase()
@@ -492,7 +417,6 @@ function filterPenTask() {
         showNotification("Match not found", "danger");
     }
 }
-
 
 function filterCompleteTask() {
     let filterInput = document.querySelector('#comTaskFilter').value.toUpperCase()
